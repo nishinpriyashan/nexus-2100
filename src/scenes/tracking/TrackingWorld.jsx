@@ -66,7 +66,7 @@ export default function TrackingWorld({
         <Suspense fallback={null}>
           <CameraRig cameraMode={cameraMode} cameraRotation={cameraRotation} cameraZoom={cameraZoom} progress={progress} routePoints={currentRoute} />
           <SmartRoads isDark={isDark} />
-          <TrackingCity count={passport.mobility.reducedMotion ? 40 : 120} isDark={isDark} />
+          <TrackingCity count={passport.mobility.reducedMotion ? 25 : 50} isDark={isDark} />
           <JourneyRoute routePoints={currentRoute} progress={progress} />
           <LiveVehicle routePoints={currentRoute} progress={progress} />
           <DriveableCyberRoadster />

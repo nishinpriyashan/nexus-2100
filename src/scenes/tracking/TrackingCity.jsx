@@ -5,7 +5,7 @@ import { createBuildingTexture, createEmissiveBuildingTexture } from '../../util
 import { SRI_LANKA_LANDMARKS } from '../../data/sriLankaLandmarks';
 import { Building2, Info, Navigation2 } from 'lucide-react';
 
-export default function TrackingCity({ count = 100, isDark = true, onSelectBuilding }) {
+export default function TrackingCity({ count = 50, isDark = true, onSelectBuilding }) {
   const [hoveredBuilding, setHoveredBuilding] = useState(null);
 
   const { facadeTexture, emissiveTexture } = useMemo(() => {

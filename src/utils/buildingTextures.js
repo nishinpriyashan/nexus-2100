@@ -1,56 +1,59 @@
 import * as THREE from 'three';
 
+const textureCache = {};
+
 /**
- * Creates a procedural canvas texture for futuristic skyscraper window grids.
+ * Creates a procedural canvas texture for futuristic skyscraper window grids (cached).
  */
 export function createBuildingTexture(isDark = true) {
+  const cacheKey = `facade_${isDark ? 'dark' : 'light'}`;
+  if (textureCache[cacheKey]) return textureCache[cacheKey];
+
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
+  canvas.width = 256;
+  canvas.height = 256;
   const ctx = canvas.getContext('2d');
 
   // Background facade
   ctx.fillStyle = isDark ? '#061322' : '#DCE5F2';
-  ctx.fillRect(0, 0, 512, 512);
+  ctx.fillRect(0, 0, 256, 256);
 
   // Vertical structural columns
   ctx.fillStyle = isDark ? '#0A1E36' : '#C5D4E8';
-  for (let x = 0; x < 512; x += 32) {
-    ctx.fillRect(x, 0, 4, 512);
+  for (let x = 0; x < 256; x += 16) {
+    ctx.fillRect(x, 0, 2, 256);
   }
 
   // Horizontal floor dividers
   ctx.fillStyle = isDark ? '#08172A' : '#CBD8EC';
-  for (let y = 0; y < 512; y += 16) {
-    ctx.fillRect(0, y, 512, 2);
+  for (let y = 0; y < 256; y += 8) {
+    ctx.fillRect(0, y, 256, 1);
   }
 
   // Window grid pixels
   const rows = 32;
   const cols = 16;
-  const wWidth = 18;
-  const wHeight = 8;
+  const wWidth = 10;
+  const wHeight = 4;
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const x = c * 32 + 6;
-      const y = r * 16 + 4;
+      const x = c * 16 + 3;
+      const y = r * 8 + 2;
       const rand = Math.random();
 
       if (rand > 0.45) {
-        // Lit window
         if (rand > 0.94) {
-          ctx.fillStyle = isDark ? '#39E7FF' : '#0099CC'; // Cyan accent
+          ctx.fillStyle = isDark ? '#39E7FF' : '#0099CC';
         } else if (rand > 0.88) {
-          ctx.fillStyle = isDark ? '#8B5CFF' : '#7C3AED'; // Violet AI accent
+          ctx.fillStyle = isDark ? '#8B5CFF' : '#7C3AED';
         } else if (rand > 0.82) {
-          ctx.fillStyle = '#FFC86B'; // Warm amber window
+          ctx.fillStyle = '#FFC86B';
         } else {
-          ctx.fillStyle = isDark ? '#A6E5FF' : '#4E87C6'; // Standard window light
+          ctx.fillStyle = isDark ? '#A6E5FF' : '#4E87C6';
         }
         ctx.fillRect(x, y, wWidth, wHeight);
       } else {
-        // Unlit/reflective window
         ctx.fillStyle = isDark ? '#030A14' : '#EAF0F8';
         ctx.fillRect(x, y, wWidth, wHeight);
       }
@@ -61,30 +64,34 @@ export function createBuildingTexture(isDark = true) {
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(2, 8);
+  textureCache[cacheKey] = texture;
   return texture;
 }
 
 /**
- * Creates an emissive-only canvas map for glowing window grids.
+ * Creates an emissive-only canvas map for glowing window grids (cached).
  */
 export function createEmissiveBuildingTexture() {
+  const cacheKey = 'emissive';
+  if (textureCache[cacheKey]) return textureCache[cacheKey];
+
   const canvas = document.createElement('canvas');
-  canvas.width = 512;
-  canvas.height = 512;
+  canvas.width = 256;
+  canvas.height = 256;
   const ctx = canvas.getContext('2d');
 
   ctx.fillStyle = '#000000';
-  ctx.fillRect(0, 0, 512, 512);
+  ctx.fillRect(0, 0, 256, 256);
 
   const rows = 32;
   const cols = 16;
-  const wWidth = 18;
-  const wHeight = 8;
+  const wWidth = 10;
+  const wHeight = 4;
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const x = c * 32 + 6;
-      const y = r * 16 + 4;
+      const x = c * 16 + 3;
+      const y = r * 8 + 2;
       const rand = Math.random();
 
       if (rand > 0.45) {
@@ -106,5 +113,7 @@ export function createEmissiveBuildingTexture() {
   texture.wrapS = THREE.RepeatWrapping;
   texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(2, 8);
+  textureCache[cacheKey] = texture;
   return texture;
 }
+
