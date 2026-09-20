@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { MapPin, Clock, Zap } from "lucide-react";
 import { useJourneyStore } from "../../store/journeyStore";
 import { routes } from "../../data/journeyData";
@@ -17,6 +16,10 @@ export default function Tracking() {
   const navigate = useNavigate();
 
   const [progress, setProgress] = useState(0.05);
+  const [cameraMode, setCameraMode] = useState("falcon");
+  const [cameraRotation, setCameraRotation] = useState({ yaw: 0, pitch: 0 });
+  const [cameraZoom, setCameraZoom] = useState(1.0);
+
   const animationRef = useRef(null);
 
   useEffect(() => {
@@ -38,6 +41,22 @@ export default function Tracking() {
     return () => { if (animationRef.current) cancelAnimationFrame(animationRef.current); };
   }, []);
 
+  const handleRotateCamera = (deltaYaw, deltaPitch) => {
+    setCameraRotation((prev) => ({
+      yaw: prev.yaw + deltaYaw,
+      pitch: Math.min(Math.max(prev.pitch + deltaPitch, -0.6), 0.6)
+    }));
+  };
+
+  const handleZoomCamera = (deltaZoom) => {
+    setCameraZoom((prev) => Math.min(Math.max(prev + deltaZoom, 0.5), 2.2));
+  };
+
+  const handleResetCamera = () => {
+    setCameraRotation({ yaw: 0, pitch: 0 });
+    setCameraZoom(1.0);
+  };
+
   if (!activeJourney) return null;
 
   const currentRoute = routes[routeType] || routes.fastest;
@@ -45,7 +64,6 @@ export default function Tracking() {
   const activeMode = getActiveMode(currentRoute, progress);
   const speed = getSimulatedSpeed(progress);
 
-  // SIMPLIFIED INTERFACE MODE — clean "You Are On The Train" experience
   if (passport.experience === 'simplified') {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6 text-center">
@@ -97,19 +115,27 @@ export default function Tracking() {
 
   return (
     <div className="relative min-h-screen w-full bg-background overflow-hidden">
-      {/* ── Desktop Layout: 3D world full-screen, HUD overlay ── */}
       <div className="hidden md:block">
-        {/* 3D world */}
         <div className="absolute inset-0 z-0">
-          <TrackingWorld progress={progress} />
+          <TrackingWorld
+            progress={progress}
+            cameraMode={cameraMode}
+            cameraRotation={cameraRotation}
+            cameraZoom={cameraZoom}
+          />
         </div>
-        {/* HUD overlay */}
-        <TrackingHUD progress={progress} />
+        <TrackingHUD
+          progress={progress}
+          cameraMode={cameraMode}
+          setCameraMode={setCameraMode}
+          cameraRotation={cameraRotation}
+          onRotateCamera={handleRotateCamera}
+          onResetCamera={handleResetCamera}
+          onZoomCamera={handleZoomCamera}
+        />
       </div>
 
-      {/* ── Mobile Layout: Stacked panels ── */}
       <div className="flex md:hidden flex-col min-h-screen">
-        {/* Header */}
         <div className="flex items-center justify-between px-4 pt-3 pb-2 bg-background/80 border-b border-surface/50 backdrop-blur-md">
           <div>
             <div className="text-xs text-secondary-text">Tracking</div>
@@ -120,7 +146,6 @@ export default function Tracking() {
           <LiveIndicator />
         </div>
 
-        {/* ETA stats bar */}
         <div className="grid grid-cols-3 divide-x divide-surface/50 bg-surface/20 border-b border-surface/50">
           {[
             { label: "ETA", value: currentRoute.arrival, Icon: Clock },
@@ -135,22 +160,21 @@ export default function Tracking() {
           ))}
         </div>
 
-        {/* 3D map — constrained height */}
         <div className="w-full" style={{ height: "50vw", minHeight: "200px", maxHeight: "300px" }}>
-          <TrackingWorld progress={progress} />
+          <TrackingWorld
+            progress={progress}
+            cameraMode={cameraMode}
+            cameraRotation={cameraRotation}
+            cameraZoom={cameraZoom}
+          />
         </div>
 
-        {/* Progress */}
         <div className="px-4 py-3">
           <JourneyProgress progress={progress} route={currentRoute} themeColor="text-primary-cyan" />
         </div>
 
-        {/* Guardian & Forecast */}
-        <div className="px-4 pb-6">
+        <div className="px-4 pb-6 space-y-4">
           <JourneyForecast progress={progress} />
-          <div className="text-[10px] font-bold text-secondary-text tracking-widest uppercase mb-2 mt-4">
-            Journey Guardian
-          </div>
           <JourneyGuardian />
         </div>
       </div>

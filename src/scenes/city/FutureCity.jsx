@@ -1,73 +1,65 @@
-import { useRef, useState, useLayoutEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useMemo } from 'react';
 import * as THREE from 'three';
+import { createBuildingTexture, createEmissiveBuildingTexture } from '../../utils/buildingTextures';
 
-export default function FutureCity({ count = 80 }) {
-  const meshRef = useRef(null);
+export default function FutureCity({ count = 80, isDark = true }) {
+  const { facadeTexture, emissiveTexture } = useMemo(() => {
+    return {
+      facadeTexture: createBuildingTexture(isDark),
+      emissiveTexture: createEmissiveBuildingTexture()
+    };
+  }, [isDark]);
 
-  // Generate instances only once using state initializer
-  const [{ matrices, colors }] = useState(() => {
-    const dummy = new THREE.Object3D();
-    const matricesArray = new Array(count);
-    const colorsArray = new Float32Array(count * 3);
-    const color = new THREE.Color();
-
+  const buildings = useMemo(() => {
+    const list = [];
     for (let i = 0; i < count; i++) {
-      const x = (Math.random() - 0.5) * 40;
-      const z = (Math.random() - 0.5) * 40 - 10;
-      const height = Math.random() * 15 + 2;
-      
-      dummy.position.set(x, height / 2 - 2, z);
-      dummy.scale.set(Math.random() * 2 + 0.5, height, Math.random() * 2 + 0.5);
-      dummy.updateMatrix();
-      matricesArray[i] = dummy.matrix.clone();
+      const x = (Math.random() - 0.5) * 45;
+      const z = (Math.random() - 0.5) * 45 - 10;
+      const width = Math.random() * 2 + 1;
+      const depth = Math.random() * 2 + 1;
+      const height = Math.random() * 16 + 3;
 
-      const rand = Math.random();
-      if (rand > 0.9) {
-        color.set('#39E7FF');
-      } else if (rand > 0.8) {
-        color.set('#8B5CFF');
-      } else {
-        color.set('#081525');
-      }
-      
-      colorsArray[i * 3] = color.r;
-      colorsArray[i * 3 + 1] = color.g;
-      colorsArray[i * 3 + 2] = color.b;
-    }
-    return { matrices: matricesArray, colors: colorsArray };
-  });
+      const hasSpire = Math.random() > 0.5;
+      const spireHeight = hasSpire ? Math.random() * 4 + 2 : 0;
 
-  // Apply matrices on mount safely inside useLayoutEffect
-  useLayoutEffect(() => {
-    if (meshRef.current) {
-      matrices.forEach((matrix, i) => {
-        meshRef.current.setMatrixAt(i, matrix);
+      list.push({
+        id: i,
+        position: [x, height / 2 - 2, z],
+        width,
+        height,
+        depth,
+        hasSpire,
+        spirePos: [x, height - 2 + spireHeight / 2, z],
+        spireHeight,
+        accentColor: Math.random() > 0.5 ? '#39E7FF' : '#8B5CFF'
       });
-      meshRef.current.instanceMatrix.needsUpdate = true;
     }
-  }, [matrices]);
-
-
-  // Slow parallax/environmental movement
-  useFrame(({ clock }) => {
-    if (meshRef.current) {
-      const time = clock.getElapsedTime();
-      meshRef.current.position.y = Math.sin(time * 0.1) * 0.5;
-    }
-  });
+    return list;
+  }, [count]);
 
   return (
-    <instancedMesh ref={meshRef} args={[null, null, count]}>
-      <boxGeometry args={[1, 1, 1]}>
-        <instancedBufferAttribute attach="attributes-color" args={[colors, 3]} />
-      </boxGeometry>
-      <meshStandardMaterial 
-        vertexColors 
-        roughness={0.2} 
-        metalness={0.8}
-        envMapIntensity={0.5}
-      />
-    </instancedMesh>
+    <group>
+      {buildings.map((b) => (
+        <group key={b.id}>
+          <mesh position={b.position}>
+            <boxGeometry args={[b.width, b.height, b.depth]} />
+            <meshStandardMaterial
+              map={facadeTexture}
+              emissiveMap={emissiveTexture}
+              emissive={isDark ? new THREE.Color('#39E7FF') : new THREE.Color('#0099CC')}
+              emissiveIntensity={isDark ? 0.3 : 0.15}
+              roughness={0.2}
+              metalness={0.8}
+            />
+          </mesh>
+          {b.hasSpire && (
+            <mesh position={b.spirePos}>
+              <cylinderGeometry args={[0.03, 0.1, b.spireHeight, 8]} />
+              <meshBasicMaterial color={b.accentColor} />
+            </mesh>
+          )}
+        </group>
+      ))}
+    </group>
   );
 }

@@ -3,6 +3,7 @@ import { Activity, Globe, Zap, Shield } from "lucide-react";
 import JourneySearch from "../../components/journey/JourneySearch";
 import TransportModes from "../../components/journey/TransportModes";
 import HomeWorld from "../../scenes/environment/HomeWorld";
+import AIAgentVideoModal from "../../components/ai/AIAgentVideoModal";
 import { useJourneyStore } from "../../store/journeyStore";
 import { useTheme } from "../../hooks/useTheme";
 
@@ -36,6 +37,9 @@ export default function Home() {
   return (
     <div className="relative w-full min-h-[calc(100vh-80px)] flex flex-col">
 
+      {/* ── 4-Second Delayed AI Video Avatar Overlay ── */}
+      <AIAgentVideoModal />
+
       {/* ── DESKTOP: Full-screen Earth + Overlay layout ── */}
       <div className="hidden md:flex w-full flex-1 relative overflow-hidden">
 
@@ -46,7 +50,6 @@ export default function Home() {
           role="img"
         >
           <HomeWorld isDark={isDark} />
-          {/* Subtle gradient to ensure text readability on the left */}
           <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-background via-background/60 to-transparent pointer-events-none" />
         </div>
 
@@ -119,21 +122,16 @@ export default function Home() {
 
       {/* ── MOBILE: Stacked layout ── */}
       <div className="flex md:hidden flex-col w-full relative">
-        
-        {/* 3D Earth — moved to background absolute to highlight it and allow it to form */}
         <div
           className="absolute inset-0 z-0 h-[60vh]"
           aria-label="3D global network globe"
           role="img"
         >
           <HomeWorld isDark={isDark} />
-          {/* Bottom fade */}
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none" />
         </div>
 
-        {/* Foreground Content */}
         <div className="relative z-10 w-full flex flex-col pt-[50vh]">
-          {/* Headline */}
           <motion.div 
             className="px-5 pt-6 pb-4 bg-background/80 backdrop-blur-sm"
             initial={{ opacity: 0, y: 20 }}
@@ -157,7 +155,6 @@ export default function Home() {
             </p>
           </motion.div>
 
-          {/* Search and transport modes */}
           <motion.div 
             className="px-5 pb-8 space-y-5 bg-background"
             initial={{ opacity: 0, y: 20 }}
