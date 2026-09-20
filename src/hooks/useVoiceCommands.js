@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useJourneyStore } from '../store/journeyStore';
+import { queryGeminiAI } from '../utils/geminiApi';
 
 /**
  * Text-To-Speech Synthesis helper
@@ -33,72 +34,63 @@ export function speakText(text, onEndCallback) {
 }
 
 /**
- * App-Wide Web Speech API Voice Command Hook.
- * Supports natural speech destination queries, vehicle selection, and camera controls.
+ * App-Wide Web Speech API Voice Command Hook powered by Google Gemini AI.
  */
 export function useVoiceCommands() {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [lastCommand, setLastCommand] = useState('');
   const [isSupported, setIsSupported] = useState(true);
+  const [isAiThinking, setIsAiThinking] = useState(false);
 
   const navigate = useNavigate();
   const { setActiveJourney, setRouteType } = useJourneyStore();
 
-  const handleCommandIntent = useCallback((text) => {
+  const handleCommandIntent = useCallback(async (text) => {
     const lower = text.toLowerCase();
     setLastCommand(text);
+    setIsAiThinking(true);
 
-    // 1. Destination Commands
+    // Get real-time AI response from Google Gemini API
+    const geminiReply = await queryGeminiAI(text);
+    setIsAiThinking(false);
+
+    // Speak Gemini's real-time response out loud
+    if (geminiReply) {
+      speakText(geminiReply);
+    }
+
+    // Process destination intent
     if (lower.includes('kandy')) {
-      speakText('Understood Master! Generating 3D route trajectory to Kandy Central Hub now.');
       setActiveJourney({ from: 'Colombo Fort Station', to: 'Kandy Central Hub' });
       navigate('/tracking');
     } else if (lower.includes('galle')) {
-      speakText('Understood Master! Routing high-speed Maglev to Galle Fort Coast.');
       setActiveJourney({ from: 'Colombo Fort Station', to: 'Galle Fort Coast' });
       navigate('/tracking');
     } else if (lower.includes('jaffna')) {
-      speakText('Routing to Jaffna Central Terminal.');
       setActiveJourney({ from: 'Colombo Fort Station', to: 'Jaffna Central Terminal' });
       navigate('/tracking');
     } else if (lower.includes('gampaha')) {
-      speakText('Routing to Gampaha Mobility Hub.');
       setActiveJourney({ from: 'Colombo Fort Station', to: 'Gampaha Mobility Hub' });
       navigate('/tracking');
     } else if (lower.includes('negombo')) {
-      speakText('Routing to Negombo Coastal Hub.');
       setActiveJourney({ from: 'Colombo Fort Station', to: 'Negombo Coastal Terminal' });
       navigate('/tracking');
     } else if (lower.includes('nuwara') || lower.includes('eliya')) {
-      speakText('Routing to Nuwara Eliya Sky Station.');
       setActiveJourney({ from: 'Colombo Fort Station', to: 'Nuwara Eliya Express' });
       navigate('/tracking');
-    } 
-    // 2. Navigation & View Controls
-    else if (lower.includes('start') || lower.includes('3d') || lower.includes('map') || lower.includes('launch') || lower.includes('travel')) {
-      speakText('Launching 3D interactive map telemetry.');
-      setActiveJourney({ from: 'Colombo Fort Station', to: 'Kandy Central Hub' });
-      navigate('/tracking');
-    } else if (lower.includes('home') || lower.includes('back')) {
-      speakText('Returning to main landing dashboard.');
-      navigate('/');
-    }
-    // 3. Vehicle Selection
-    else if (lower.includes('air') || lower.includes('aero') || lower.includes('taxi')) {
-      speakText('Selecting AeroLink Air Taxi.');
+    } else if (lower.includes('air') || lower.includes('aero') || lower.includes('taxi')) {
       setRouteType('aiOptimized');
       navigate('/tracking');
     } else if (lower.includes('maglev') || lower.includes('bullet') || lower.includes('train')) {
-      speakText('Selecting high-speed Maglev Express.');
       setRouteType('fastest');
       navigate('/tracking');
     } else if (lower.includes('tram') || lower.includes('eco')) {
-      speakText('Selecting Eco Tram.');
       setRouteType('eco');
       navigate('/tracking');
+    } else if (lower.includes('home') || lower.includes('back')) {
+      navigate('/');
     } else {
-      speakText(`Searching transit options for ${text}`);
       setActiveJourney({ from: 'Colombo Fort Station', to: text.toUpperCase() });
       navigate('/tracking');
     }
@@ -126,7 +118,7 @@ export function useVoiceCommands() {
 
       recognition.onstart = () => {
         setIsListening(true);
-        setTranscript('Listening... Speak destination e.g. "I want to travel to Kandy"');
+        setTranscript('Listening for Gemini voice input...');
       };
 
       recognition.onresult = (event) => {
@@ -156,6 +148,7 @@ export function useVoiceCommands() {
 
   return {
     isListening,
+    isAiThinking,
     transcript,
     lastCommand,
     isSupported,
@@ -163,4 +156,5 @@ export function useVoiceCommands() {
     handleCommandIntent
   };
 }
+
 
