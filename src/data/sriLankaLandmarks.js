@@ -62,5 +62,42 @@ export const SRI_LANKA_LANDMARKS = [
     accentColor: "#39E7FF",
     description: "Curved solar-glass smart habitat & hyper-loop depot.",
     isIconic: true
+  },
+  {
+    id: "kandy-temple-2100",
+    name: "Kandy Sacred Temple & Lake",
+    localName: "ශ්‍රී දළදා මාළිගාව සහ මහනුවර වැව",
+    type: "Heritage Cultural Sanctuary & Lake",
+    height: 16,
+    position: [-28, 8, 22],
+    color: "#FFD700", // Golden roof
+    accentColor: "#FFFFFF",
+    description: "Kandy Temple of the Sacred Tooth Relic overlooking the 3D Kandy Lake.",
+    isIconic: true
+  },
+  {
+    id: "galle-lighthouse-2100",
+    name: "Galle Fort Lighthouse & Ramparts",
+    localName: "ගාල්ල බලකොටුව සහ ප්‍රදීපාගාරය",
+    type: "Coastal Ramparts & Ocean Beacon",
+    height: 20,
+    position: [32, 10, -28],
+    color: "#FFFFFF",
+    accentColor: "#39E7FF",
+    description: "Historic Galle Fort Lighthouse watching over the Southern Ocean Coast.",
+    isIconic: true
+  },
+  {
+    id: "sigiriya-rock-2100",
+    name: "Sigiriya Rock Citadel 2100",
+    localName: "සීගිරිය 2100",
+    type: "Ancient Citadel & Aerial Skyway",
+    height: 26,
+    position: [0, 13, -38],
+    color: "#8B5A2B",
+    accentColor: "#42FFB4",
+    description: "World Heritage Sigiriya Lion Rock plateau with 2100 holographic skyways.",
+    isIconic: true
   }
 ];
+

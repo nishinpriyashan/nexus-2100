@@ -157,15 +157,15 @@ export default function TrackingHUD({
         </div>
       </div>
 
-      {/* ── Floating Widgets: GPS Map & Anchored Right Sidebar Gesture Controller ── */}
-      <div className="absolute top-28 right-6 z-20 pointer-events-auto flex flex-col gap-4 items-end">
-        {showGpsMap && (
-          <div className="w-80 md:w-96 animate-fadeIn shadow-2xl">
-            <InteractiveGpsMap progress={progress} />
-          </div>
-        )}
+      {/* ── Left Corner Widget: Real OpenStreetMap GPS Path Map (Expandable) ── */}
+      <div className="absolute top-28 left-6 z-30 pointer-events-auto">
+        <div className="w-80 md:w-96 animate-fadeIn shadow-2xl">
+          <InteractiveGpsMap progress={progress} />
+        </div>
+      </div>
 
-        {/* Anchored Right-Side Gesture Controller */}
+      {/* ── Right Corner Widget: Anchored Right Sidebar Gesture Controller ── */}
+      <div className="absolute top-28 right-6 z-20 pointer-events-auto flex flex-col gap-4 items-end">
         <div className="w-72 md:w-80 shadow-2xl">
           <GestureController
             cameraMode={cameraMode}
@@ -176,6 +176,7 @@ export default function TrackingHUD({
           />
         </div>
       </div>
+
 
       {/* ── Bottom Mouse Trigger Zone (Auto-Hides Dashboard until Hovered) ── */}
       <div 

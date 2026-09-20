@@ -80,6 +80,18 @@ export default function TrackingCity({ count = 100, isDark = true, onSelectBuild
             <GrandComplexModel height={landmark.height} color={landmark.color} isDark={isDark} />
           )}
 
+          {landmark.id === 'kandy-temple-2100' && (
+            <KandyTempleModel height={landmark.height} color={landmark.color} />
+          )}
+
+          {landmark.id === 'galle-lighthouse-2100' && (
+            <GalleLighthouseModel height={landmark.height} color={landmark.color} />
+          )}
+
+          {landmark.id === 'sigiriya-rock-2100' && (
+            <SigiriyaRockModel height={landmark.height} color={landmark.color} />
+          )}
+
           {/* Floating 3D Holographic Label Header */}
           <Html
             position={[0, landmark.height / 2 + 2, 0]}
@@ -93,14 +105,14 @@ export default function TrackingCity({ count = 100, isDark = true, onSelectBuild
               }`}
             >
               {/* Pulsing Landmark Beacon Pin */}
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface/90 backdrop-blur-md border border-primary-cyan/50 shadow-2xl text-primary-text">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-950/90 backdrop-blur-md border border-cyan-400/50 shadow-2xl text-white">
                 <span className="w-2 h-2 rounded-full animate-ping" style={{ backgroundColor: landmark.color }} />
-                <Building2 className="w-3.5 h-3.5 text-primary-cyan shrink-0" />
+                <Building2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
                 <div className="flex flex-col">
                   <span className="text-[11px] font-bold tracking-wide whitespace-nowrap" style={{ fontFamily: 'Space Grotesk' }}>
                     {landmark.name}
                   </span>
-                  <span className="text-[9px] text-secondary-text font-mono leading-none">
+                  <span className="text-[9px] text-slate-300 font-mono leading-none">
                     {landmark.localName}
                   </span>
                 </div>
@@ -108,12 +120,12 @@ export default function TrackingCity({ count = 100, isDark = true, onSelectBuild
 
               {/* Hover detail tooltip card */}
               {hoveredBuilding?.id === landmark.id && (
-                <div className="mt-2 p-3 w-56 rounded-xl bg-background/95 backdrop-blur-xl border border-primary-cyan/60 text-primary-text shadow-2xl text-left animate-fadeIn">
-                  <div className="text-[10px] font-mono text-primary-cyan tracking-widest uppercase mb-1 flex items-center gap-1">
-                    <Info className="w-3 h-3" />
+                <div className="mt-2 p-3 w-56 rounded-xl glass-card-dark text-white shadow-2xl text-left animate-fadeIn">
+                  <div className="text-[10px] font-mono text-cyan-400 tracking-widest uppercase mb-1 flex items-center gap-1">
+                    <Info className="w-3 h-3 text-cyan-400" />
                     {landmark.type}
                   </div>
-                  <div className="text-xs text-secondary-text leading-relaxed">
+                  <div className="text-xs text-slate-200 leading-relaxed">
                     {landmark.description}
                   </div>
                 </div>
@@ -122,6 +134,9 @@ export default function TrackingCity({ count = 100, isDark = true, onSelectBuild
           </Html>
         </group>
       ))}
+
+      {/* ── 3D Sri Lankan Tropical Coconut Palm Trees ── */}
+      <SriLankaPalmTrees GrovesCount={35} />
 
       {/* ── Procedural Skyscraper Main City Grid ── */}
       {buildings.map((b) => (
@@ -153,6 +168,103 @@ export default function TrackingCity({ count = 100, isDark = true, onSelectBuild
           )}
         </group>
       ))}
+    </group>
+  );
+}
+
+/* ── Sri Lankan Coconut Palm Tree Forest Component ── */
+function SriLankaPalmTrees({ GrovesCount = 30 }) {
+  const trees = useMemo(() => {
+    const list = [];
+    for (let i = 0; i < GrovesCount; i++) {
+      const x = (Math.random() - 0.5) * 80;
+      const z = (Math.random() - 0.5) * 80;
+      const height = Math.random() * 2 + 3.5;
+      list.push({ id: `tree-${i}`, pos: [x, height / 2, z], height });
+    }
+    return list;
+  }, [GrovesCount]);
+
+  return (
+    <group>
+      {trees.map((t) => (
+        <group key={t.id} position={t.pos}>
+          {/* Brown Palm Trunk */}
+          <mesh>
+            <cylinderGeometry args={[0.1, 0.18, t.height, 8]} />
+            <meshStandardMaterial color="#8B5A2B" roughness={0.8} />
+          </mesh>
+          {/* Lush Green Palm Canopy */}
+          <mesh position={[0, t.height / 2 + 0.4, 0]}>
+            <coneGeometry args={[1.6, 1.2, 8]} />
+            <meshStandardMaterial color="#2E8B57" roughness={0.4} />
+          </mesh>
+        </group>
+      ))}
+    </group>
+  );
+}
+
+/* ── Custom 3D Mesh for Kandy Sacred Temple of Tooth ── */
+function KandyTempleModel({ height, color }) {
+  return (
+    <group>
+      {/* Temple White Wall Base */}
+      <mesh position={[0, height * 0.25, 0]}>
+        <boxGeometry args={[4, height * 0.5, 3]} />
+        <meshStandardMaterial color="#FFFFFF" roughness={0.3} />
+      </mesh>
+      {/* Golden Roof Canopy */}
+      <mesh position={[0, height * 0.65, 0]}>
+        <coneGeometry args={[3.2, 2.5, 4]} />
+        <meshStandardMaterial color={color} metalness={0.9} roughness={0.1} emissive="#FFD700" emissiveIntensity={0.5} />
+      </mesh>
+      {/* Kandy Lake Blue Water Surface */}
+      <mesh position={[0, 0.05, 3.5]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[7, 4]} />
+        <meshStandardMaterial color="#0077BE" roughness={0.1} metalness={0.8} opacity={0.85} transparent />
+      </mesh>
+    </group>
+  );
+}
+
+/* ── Custom 3D Mesh for Galle Lighthouse & Ramparts ── */
+function GalleLighthouseModel({ height, color }) {
+  return (
+    <group>
+      {/* White Lighthouse Tower */}
+      <mesh position={[0, height * 0.45, 0]}>
+        <cylinderGeometry args={[0.6, 1.1, height * 0.9, 16]} />
+        <meshStandardMaterial color="#FFFFFF" roughness={0.2} />
+      </mesh>
+      {/* Beacon Light Room */}
+      <mesh position={[0, height * 0.95, 0]}>
+        <cylinderGeometry args={[0.7, 0.7, 1.2, 12]} />
+        <meshStandardMaterial color="#39E7FF" emissive="#39E7FF" emissiveIntensity={0.8} />
+      </mesh>
+      {/* Galle Stone Rampart Wall */}
+      <mesh position={[-2, height * 0.15, 0]}>
+        <boxGeometry args={[4, height * 0.3, 1.5]} />
+        <meshStandardMaterial color="#708090" roughness={0.9} />
+      </mesh>
+    </group>
+  );
+}
+
+/* ── Custom 3D Mesh for Sigiriya Lion Rock Citadel ── */
+function SigiriyaRockModel({ height, color }) {
+  return (
+    <group>
+      {/* Massive Rock Plateau */}
+      <mesh position={[0, height * 0.35, 0]}>
+        <cylinderGeometry args={[4.5, 6, height * 0.7, 12]} />
+        <meshStandardMaterial color="#8B5A2B" roughness={0.95} />
+      </mesh>
+      {/* Top Palace Gardens */}
+      <mesh position={[0, height * 0.72, 0]}>
+        <cylinderGeometry args={[4.4, 4.4, 0.4, 12]} />
+        <meshStandardMaterial color="#2E8B57" roughness={0.5} />
+      </mesh>
     </group>
   );
 }
@@ -241,3 +353,4 @@ function GrandComplexModel({ height, color, isDark }) {
     </group>
   );
 }
+
