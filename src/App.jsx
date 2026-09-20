@@ -6,7 +6,7 @@ import Tracking from './pages/Tracking'
 
 function App() {
   return (
-    <Router>
+    <Router basename="/nexus-2100">
       <div className="flex flex-col min-h-screen bg-background text-primary-text">
         <NexusNav />
         <main className="flex-1 w-full h-full pt-20">
