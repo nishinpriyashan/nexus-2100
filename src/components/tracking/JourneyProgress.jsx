@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { useJourneyStore } from '../../store/journeyStore';
 
 export default function JourneyProgress({ progress, route, themeColor }) {
-  const { accessibility } = useJourneyStore();
+  const { passport } = useJourneyStore();
   const percentage = Math.round(progress * 100);
 
   // Derive current node based on progress
@@ -41,7 +41,7 @@ export default function JourneyProgress({ progress, route, themeColor }) {
       <div className="flex justify-between items-center text-xs text-secondary-text">
         <span>{route.nodes[0].time}</span>
         
-        {accessibility.stepFree && (
+        {passport.mobility.stepFree && (
           <span className="flex items-center gap-1 text-primary-cyan">
             ✓ Step-free Route
           </span>

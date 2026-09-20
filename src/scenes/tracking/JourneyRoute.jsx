@@ -4,7 +4,7 @@ import { Line } from '@react-three/drei';
 import { useJourneyStore } from '../../store/journeyStore';
 
 export default function JourneyRoute({ routePoints }) {
-  const { aiApplied, accessibility } = useJourneyStore();
+  const { passport, aiApplied } = useJourneyStore();
   const lineRef = useRef();
   
   const color = aiApplied ? '#8B5CFF' : '#39E7FF'; // Violet or Cyan
@@ -13,7 +13,7 @@ export default function JourneyRoute({ routePoints }) {
   // For simplicity in the demo, we just draw one bright glowing line and maybe a pulse.
 
   useFrame(({ clock }) => {
-    if (!accessibility.reducedMotion && lineRef.current) {
+    if (!passport.mobility.reducedMotion && lineRef.current) {
       // Subtle pulse effect on the line material if possible
       lineRef.current.material.opacity = 0.6 + Math.sin(clock.getElapsedTime() * 2) * 0.2;
     }

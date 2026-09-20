@@ -1,73 +1,96 @@
-import { useJourneyStore } from '../../store/journeyStore';
-import { routes } from '../../data/journeyData';
-import JourneyProgress from './JourneyProgress';
-import NexusLiveMonitor from './NexusLiveMonitor';
-import LiveIndicator from './LiveIndicator';
-import { ArrowRight, Activity, Clock, Zap } from 'lucide-react';
+import { useJourneyStore } from "../../store/journeyStore";
+import { routes } from "../../data/journeyData";
+import { getRemainingMinutes, getSimulatedSpeed, getDistanceRemaining } from "../../utils/journeyUtils";
+import JourneyProgress from "./JourneyProgress";
+import NexusLiveMonitor from "./NexusLiveMonitor";
+import LiveIndicator from "./LiveIndicator";
+import JourneyGuardian from "./JourneyGuardian";
+import JourneyForecast from "./JourneyForecast";
+import { ArrowRight, Activity, Clock, Zap, Navigation } from "lucide-react";
 
-export default function TrackingHUD({ progress, journeySimulation }) {
-  const { activeJourney, routeType, accessibility, aiApplied } = useJourneyStore();
-  const from = activeJourney?.from || 'Naaldwijk';
-  const to = activeJourney?.to || 'Amsterdam';
+export default function TrackingHUD({ progress }) {
+  const { activeJourney, routeType, aiApplied } = useJourneyStore();
+  const from = activeJourney?.from || "Naaldwijk";
+  const to = activeJourney?.to || "Amsterdam";
 
-  let currentRoute = routes[routeType];
-  if (routeType === 'fastest' && accessibility.stepFree) {
-    currentRoute = routes.accessible;
-  }
-
-  // Derived simulation data
-  const currentSpeed = (300 + Math.sin(progress * 10) * 12).toFixed(0);
-  const remainingMin = Math.max(1, Math.ceil((1 - progress) * currentRoute.duration));
-  const themeColor = aiApplied ? 'text-ai-violet' : 'text-primary-cyan';
+  const currentRoute = routes[routeType] || routes.fastest;
+  const remainingMin = getRemainingMinutes(currentRoute, progress);
+  const speed = getSimulatedSpeed(progress);
+  const distRemaining = getDistanceRemaining(progress);
+  const themeColor = aiApplied ? "text-ai-violet" : "text-primary-cyan";
 
   return (
-    <div className="absolute inset-0 z-10 pointer-events-none p-6 md:p-12 flex flex-col justify-between">
-      
-      {/* Top Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start gap-4">
-        <div>
-          <div className="flex items-center gap-4 mb-2 pointer-events-auto">
-            <span className="text-xs font-mono text-primary-cyan tracking-widest uppercase">Live Journey // NX-8407</span>
+    <div
+      className="absolute inset-0 z-10 pointer-events-none p-4 md:p-10 flex flex-col justify-between"
+      role="region"
+      aria-label="Journey tracking dashboard"
+    >
+      {/* ── Top Row ── */}
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+        {/* Journey title */}
+        <div className="pointer-events-auto">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-[10px] font-mono text-primary-cyan/70 tracking-widest uppercase">
+              Live Journey // NX-8407
+            </span>
             <LiveIndicator />
           </div>
-          
-          <div className="flex items-center gap-4 text-2xl md:text-5xl font-bold tracking-tight">
+          <div
+            className="flex items-center gap-3 text-3xl md:text-5xl font-bold tracking-tight"
+            style={{ fontFamily: "Space Grotesk, Inter, sans-serif" }}
+          >
             <span className="text-primary-text">{from}</span>
-            <ArrowRight className="w-6 h-6 md:w-10 md:h-10 text-secondary-text" />
+            <ArrowRight className="w-6 h-6 md:w-8 md:h-8 text-secondary-text shrink-0" aria-hidden="true" />
             <span className="text-primary-text">{to}</span>
           </div>
         </div>
 
-        {/* Top Right Live Stats */}
-        <div className="flex gap-4 md:gap-8 bg-surface/30 backdrop-blur-md border border-surface p-4 rounded-xl pointer-events-auto">
-          <Stat label="ETA" value={currentRoute.arrival} icon={Clock} highlight={themeColor} />
-          <Stat label="REMAINING" value={`${remainingMin} M`} icon={Activity} />
-          <Stat label="SPEED" value={`${currentSpeed} KM/H`} icon={Zap} />
+        {/* Stats panel */}
+        <div
+          className="flex gap-5 md:gap-8 bg-surface/30 backdrop-blur-md border border-surface/60 p-4 rounded-2xl pointer-events-auto"
+          aria-label="Journey statistics"
+          aria-live="polite"
+        >
+          <Stat label="ETA" value={currentRoute.arrival} Icon={Clock} className={themeColor} />
+          <Stat label="Remaining" value={`${remainingMin}m`} Icon={Activity} />
+          <Stat label="Speed" value={`${speed}`} unit="km/h" Icon={Zap} />
+          <Stat label="Distance" value={distRemaining} unit="km" Icon={Navigation} className="hidden md:flex" />
         </div>
       </div>
 
-      {/* Bottom Area */}
-      <div className="flex flex-col md:flex-row justify-between items-end gap-8 pointer-events-auto">
-        <div className="w-full md:w-1/2 lg:w-2/3">
-          <JourneyProgress progress={progress} route={currentRoute} themeColor={themeColor} />
+      {/* ── Bottom Row ── */}
+      <div className="flex flex-col lg:flex-row justify-between items-end gap-5 pointer-events-auto">
+        {/* Progress + Monitor */}
+        <div className="w-full lg:w-[55%] xl:w-3/5 flex flex-col gap-4">
+          <JourneyProgress
+            progress={progress}
+            route={currentRoute}
+            themeColor={themeColor}
+          />
+          <NexusLiveMonitor route={currentRoute} />
         </div>
 
-        <div className="w-full md:w-96">
-          <NexusLiveMonitor route={currentRoute} onAiTriggered={journeySimulation.triggerAiAlert} aiWarningActive={journeySimulation.aiWarningActive} />
+        {/* Guardian panel */}
+        <div className="w-full lg:w-80 xl:w-96 flex flex-col justify-end">
+          <JourneyForecast progress={progress} />
+          <JourneyGuardian />
         </div>
       </div>
-
     </div>
   );
 }
 
-function Stat({ label, value, icon: Icon, highlight }) {
+function Stat({ label, value, unit, Icon, className = "text-primary-text" }) {
   return (
     <div className="flex flex-col">
-      <span className="text-[10px] uppercase tracking-wider text-secondary-text mb-1 flex items-center gap-1">
-        <Icon className="w-3 h-3" /> {label}
+      <span className="text-[9px] uppercase tracking-widest text-secondary-text mb-1 flex items-center gap-1">
+        <Icon className="w-3 h-3" aria-hidden="true" />
+        {label}
       </span>
-      <span className={`text-xl font-mono font-bold ${highlight || 'text-primary-text'}`}>{value}</span>
+      <span className={`text-lg md:text-xl font-mono font-bold leading-none ${className}`}>
+        {value}
+        {unit && <span className="text-xs text-secondary-text ml-1">{unit}</span>}
+      </span>
     </div>
   );
 }

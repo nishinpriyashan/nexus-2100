@@ -1,24 +1,51 @@
 @import "tailwindcss";
 
+/* =============================================================================
+   NEXUS 2100 — Design System
+   Dark mode is the cinematic default. Light mode is clean aerospace.
+   ============================================================================= */
+
+/* --- Dark Mode (default) Color Tokens --- */
 @theme {
+  /* Backgrounds */
   --color-background: #030711;
-  --color-surface: #081525;
+  --color-surface: #07111F;
+  --color-surface-elevated: #091827;
+  --color-surface-glass: rgba(7, 17, 31, 0.7);
+
+  /* Brand */
   --color-primary-cyan: #39E7FF;
   --color-ai-violet: #8B5CFF;
   --color-success: #42FFB4;
   --color-warning: #FFB84D;
+
+  /* Text */
   --color-primary-text: #F4FAFF;
   --color-secondary-text: #8CA5BA;
+
+  /* Borders */
+  --color-border: #0F2035;
+  --color-border-subtle: rgba(57, 231, 255, 0.12);
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-mono: "Space Grotesk", ui-monospace, monospace;
 }
 
+/* --- Base Layer --- */
 @layer base {
   html, body {
-    @apply bg-background text-primary-text;
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 100%;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    min-height: 100%;
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    color: var(--color-primary-text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
   }
 
   #root {
@@ -27,4 +54,189 @@
     display: flex;
     flex-direction: column;
   }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: var(--color-background); }
+  ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-primary-cyan); }
+
+  /* Focus indicators — WCAG compliant */
+  :focus-visible {
+    outline: 2px solid var(--color-primary-cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Remove focus ring when using mouse */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+/* =============================================================================
+   LIGHT MODE — Professional aerospace laboratory aesthetic
+   ============================================================================= */
+[data-theme="light"] {
+  --color-background: #F0F4FA;
+  --color-surface: #FFFFFF;
+  --color-surface-elevated: #E8EEF8;
+  --color-surface-glass: rgba(255, 255, 255, 0.75);
+  --color-primary-cyan: #0099CC;
+  --color-ai-violet: #7C3AED;
+  --color-success: #059669;
+  --color-warning: #D97706;
+  --color-primary-text: #0F1F35;
+  --color-secondary-text: #4A6380;
+  --color-border: #CBD8E8;
+  --color-border-subtle: rgba(0, 153, 204, 0.2);
+}
+
+[data-theme="light"] html,
+[data-theme="light"] body,
+:root[data-theme="light"] {
+  background-color: #F0F4FA;
+  color: #0F1F35;
+}
+
+/* Tailwind utility overrides for light mode via data-theme */
+[data-theme="light"] .bg-background { background-color: #F0F4FA !important; }
+[data-theme="light"] .bg-surface { background-color: #FFFFFF !important; }
+[data-theme="light"] .text-primary-text { color: #0F1F35 !important; }
+[data-theme="light"] .text-secondary-text { color: #4A6380 !important; }
+[data-theme="light"] .text-primary-cyan { color: #0099CC !important; }
+[data-theme="light"] .text-ai-violet { color: #7C3AED !important; }
+[data-theme="light"] .text-success { color: #059669 !important; }
+[data-theme="light"] .border-surface { border-color: #CBD8E8 !important; }
+[data-theme="light"] .bg-background\/40 { background-color: rgba(240, 244, 250, 0.8) !important; }
+[data-theme="light"] .bg-background\/50 { background-color: rgba(240, 244, 250, 0.85) !important; }
+[data-theme="light"] .bg-surface\/20 { background-color: rgba(255, 255, 255, 0.6) !important; }
+[data-theme="light"] .bg-surface\/30 { background-color: rgba(255, 255, 255, 0.7) !important; }
+[data-theme="light"] .bg-surface\/40 { background-color: rgba(255, 255, 255, 0.8) !important; }
+[data-theme="light"] .bg-surface\/90 { background-color: rgba(255, 255, 255, 0.95) !important; }
+[data-theme="light"] .border-surface\/50 { border-color: rgba(203, 216, 232, 0.6) !important; }
+[data-theme="light"] .border-surface\/80 { border-color: rgba(203, 216, 232, 0.8) !important; }
+[data-theme="light"] .bg-primary-cyan\/10 { background-color: rgba(0, 153, 204, 0.1) !important; }
+[data-theme="light"] .border-primary-cyan\/20 { border-color: rgba(0, 153, 204, 0.25) !important; }
+[data-theme="light"] .border-primary-cyan\/30 { border-color: rgba(0, 153, 204, 0.35) !important; }
+[data-theme="light"] .border-primary-cyan\/50 { border-color: rgba(0, 153, 204, 0.5) !important; }
+[data-theme="light"] .bg-ai-violet\/10 { background-color: rgba(124, 58, 237, 0.1) !important; }
+[data-theme="light"] .border-ai-violet\/20 { border-color: rgba(124, 58, 237, 0.25) !important; }
+[data-theme="light"] .text-primary-cyan\/60 { color: rgba(0, 153, 204, 0.6) !important; }
+[data-theme="light"] .text-primary-cyan\/40 { color: rgba(0, 153, 204, 0.4) !important; }
+[data-theme="light"] .backdrop-blur-md { backdrop-filter: blur(12px); }
+[data-theme="light"] .bg-background\/80 { background-color: rgba(240, 244, 250, 0.9) !important; }
+
+/* =============================================================================
+   VISUAL ASSISTANCE MODE
+   Larger text, thicker borders, higher contrast, bigger touch targets
+   ============================================================================= */
+.nexus-visual-assistance {
+  font-size: 18px !important;
+  line-height: 1.6 !important;
+}
+
+.nexus-visual-assistance button,
+.nexus-visual-assistance a,
+.nexus-visual-assistance [role="button"] {
+  min-height: 48px !important;
+  min-width: 48px !important;
+  font-size: 1rem !important;
+}
+
+.nexus-visual-assistance input {
+  font-size: 1rem !important;
+  min-height: 48px !important;
+}
+
+.nexus-visual-assistance .border-surface {
+  border-width: 2px !important;
+}
+
+/* =============================================================================
+   REDUCED MOTION
+   Respect OS preference AND in-app toggle.
+   ============================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Applied when user toggles reduced motion in the app */
+.nexus-reduced-motion *,
+.nexus-reduced-motion *::before,
+.nexus-reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Keep essential transitions readable but instant */
+.nexus-reduced-motion .motion-safe\:animate-spin { animation: none !important; }
+.nexus-reduced-motion .animate-pulse { animation: none !important; opacity: 0.8 !important; }
+
+/* =============================================================================
+   NEXUS DESIGN UTILITIES
+   ============================================================================= */
+
+/* Glass panel — the primary surface treatment */
+.nexus-glass {
+  background: rgba(7, 17, 31, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(57, 231, 255, 0.1);
+  border-radius: 1rem;
+}
+
+[data-theme="light"] .nexus-glass {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(0, 153, 204, 0.15);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Glow accent for primary-cyan elements */
+.nexus-glow-cyan {
+  box-shadow: 0 0 20px rgba(57, 231, 255, 0.2), 0 0 40px rgba(57, 231, 255, 0.05);
+}
+
+/* Glow accent for AI violet elements */
+.nexus-glow-violet {
+  box-shadow: 0 0 20px rgba(139, 92, 255, 0.2), 0 0 40px rgba(139, 92, 255, 0.05);
+}
+
+/* Status indicator pulse */
+.nexus-pulse-cyan {
+  animation: nexus-pulse-cyan 2s ease-in-out infinite;
+}
+
+@keyframes nexus-pulse-cyan {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(57, 231, 255, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(57, 231, 255, 0); }
+}
+
+/* Route scan animation used by AI */
+@keyframes nexus-scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(200%); }
+}
+
+.nexus-scan-line {
+  animation: nexus-scan 2s ease-in-out infinite;
+}
+
+/* Typography helpers */
+.nexus-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.nexus-display {
+  font-family: var(--font-display);
+  font-weight: 700;
 }

@@ -87,7 +87,7 @@ export default function PredictiveAI() {
                 </div>
 
                 <div className="text-center">
-                  <span className="text-lg font-bold text-success-green bg-success-green/10 px-4 py-1 rounded-full border border-success-green/20">
+                  <span className="text-lg font-bold text-success bg-success/10 px-4 py-1 rounded-full border border-success/20">
                     8 MIN SAVED
                   </span>
                 </div>
@@ -120,9 +120,9 @@ export default function PredictiveAI() {
               animate={{ opacity: 1, scale: 1 }}
               className="flex-1 flex flex-col items-center justify-center text-center space-y-6"
             >
-              <div className="w-16 h-16 rounded-full bg-success-green/20 border border-success-green/40 flex items-center justify-center relative">
-                <div className="absolute inset-0 rounded-full border-2 border-success-green border-t-transparent animate-spin" style={{ animationDuration: '3s' }} />
-                <Clock className="w-8 h-8 text-success-green" />
+              <div className="w-16 h-16 rounded-full bg-success/20 border border-success/40 flex items-center justify-center relative">
+                <div className="absolute inset-0 rounded-full border-2 border-success border-t-transparent animate-spin" style={{ animationDuration: '3s' }} />
+                <Clock className="w-8 h-8 text-success" />
               </div>
               <div>
                 <h4 className="text-xl font-bold text-primary-text mb-2">Route Synchronized</h4>

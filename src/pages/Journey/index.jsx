@@ -1,4 +1,6 @@
 import { Suspense, useEffect } from 'react';
+import ErrorBoundary from '../../components/common/ErrorBoundary';
+import WebGLFallback from '../../components/common/WebGLFallback';
 import { useNavigate } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { useJourneyStore } from '../../store/journeyStore';
@@ -11,7 +13,7 @@ import PredictiveAI from '../../components/journey/PredictiveAI';
 import JourneyRouteScene from '../../scenes/journey/JourneyRouteScene';
 
 export default function Journey() {
-  const { activeJourney, routeType, accessibility } = useJourneyStore();
+  const { passport, activeJourney, routeType } = useJourneyStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +27,7 @@ export default function Journey() {
 
   // Determine which route object to use based on store state
   let currentRoute = routes[routeType];
-  if (routeType === 'fastest' && accessibility.stepFree) {
+  if (routeType === 'fastest' && passport.mobility.stepFree) {
     currentRoute = routes.accessible;
   }
 
@@ -34,13 +36,15 @@ export default function Journey() {
       
       {/* Background WebGL Layer */}
       <div className="fixed inset-0 z-0 pointer-events-none opacity-40">
-        <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-          <ambientLight intensity={0.5} />
-          <directionalLight position={[10, 10, 5]} intensity={1} />
-          <Suspense fallback={null}>
-            <JourneyRouteScene />
-          </Suspense>
-        </Canvas>
+        <ErrorBoundary fallback={<WebGLFallback />}>
+          <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 10, 5]} intensity={1} />
+            <Suspense fallback={null}>
+              <JourneyRouteScene />
+            </Suspense>
+          </Canvas>
+        </ErrorBoundary>
       </div>
 
       {/* DOM UI Layer */}

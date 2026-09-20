@@ -12,6 +12,7 @@ export default function JourneySearch() {
   const [validationError, setValidationError] = useState('');
   const navigate = useNavigate();
   const setActiveJourney = useJourneyStore((state) => state.setActiveJourney);
+  const setJourneyStatus = useJourneyStore((state) => state.setJourneyStatus);
 
   const handleSwap = () => {
     setFrom(to);
@@ -28,6 +29,7 @@ export default function JourneySearch() {
     }
 
     setIsAnalyzing(true);
+    setJourneyStatus("analyzing");
     
     // Simulate AI analysis delay
     setTimeout(() => {

@@ -1,10 +1,32 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/nexus-2100/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>nexus-2100</title>
+    <meta name="description" content="NEXUS 2100 — AI-native mobility operating system. Plan journeys across autonomous buses, maglev trains, aerial links, and smart roads in the connected world of 2100." />
+    <meta name="theme-color" content="#030711" />
+    <meta property="og:title" content="NEXUS 2100 — AI Mobility OS" />
+    <meta property="og:description" content="One intelligent network connecting every journey. Autonomous. Predictive. Inclusive." />
+    <title>NEXUS 2100 — AI Mobility OS</title>
+    <!-- Google Fonts: Inter + Space Grotesk -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- Prevent FOUC: apply stored theme before React mounts -->
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('nexus-theme') || 'system';
+          var resolved = stored === 'system'
+            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : stored;
+          document.documentElement.setAttribute('data-theme', resolved);
+        } catch(e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
