@@ -62,7 +62,7 @@ export default function NexusNav() {
   return (
     <header
       ref={navRef}
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-3 py-2.5 md:px-8 md:py-3 backdrop-blur-xl bg-background/80 border-b border-border shadow-sm transition-colors duration-300"
+      className="fixed top-0 left-0 right-0 z-[120] flex items-center justify-between px-3 py-2.5 md:px-8 md:py-3 backdrop-blur-xl bg-background/80 border-b border-border shadow-sm transition-colors duration-300"
       role="banner"
     >
       {/* Left — logo + back button + status */}

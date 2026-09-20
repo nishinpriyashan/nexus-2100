@@ -24,7 +24,7 @@ function App() {
           <NexusNav />
           <main className="flex-1 w-full h-full pt-20">
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Tracking />} />
               <Route path="/journey" element={<Journey />} />
               <Route path="/tracking" element={<Tracking />} />
             </Routes>

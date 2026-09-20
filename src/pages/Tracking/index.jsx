@@ -10,9 +10,10 @@ import JourneyGuardian from "../../components/tracking/JourneyGuardian";
 import JourneyForecast from "../../components/tracking/JourneyForecast";
 import LiveIndicator from "../../components/tracking/LiveIndicator";
 import JourneyProgress from "../../components/tracking/JourneyProgress";
+import AIAgentVideoModal from "../../components/ai/AIAgentVideoModal";
 
 export default function Tracking() {
-  const { passport, activeJourney, routeType, cameraMode, setCameraMode } = useJourneyStore();
+  const { passport, activeJourney, setActiveJourney, routeType, cameraMode, setCameraMode } = useJourneyStore();
   const navigate = useNavigate();
 
   const [progress, setProgress] = useState(0.05);
@@ -22,8 +23,10 @@ export default function Tracking() {
   const animationRef = useRef(null);
 
   useEffect(() => {
-    if (!activeJourney) navigate("/");
-  }, [activeJourney, navigate]);
+    if (!activeJourney) {
+      setActiveJourney({ from: "Colombo Fort Station", to: "Kandy Central Hub" });
+    }
+  }, [activeJourney, setActiveJourney]);
 
   useEffect(() => {
     let lastTime = performance.now();
@@ -114,6 +117,7 @@ export default function Tracking() {
 
   return (
     <div className="relative min-h-screen w-full bg-background overflow-hidden">
+      <AIAgentVideoModal />
       <div className="hidden md:block">
         <div className="absolute inset-0 z-0">
           <TrackingWorld
