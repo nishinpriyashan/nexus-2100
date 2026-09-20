@@ -24,13 +24,24 @@ export const useJourneyStore = create(
         },
       },
 
-      // ── Theme state ────────────────────────────────────────────────────
-      // Mirrored here for 3D scenes. Primary source of truth is ThemeContext.
+      // ── Drive Mode state ───────────────────────────────────────────────
+      isDriveMode: false,
+      driveSpeed: 0,
+      steeringAngle: 0,
+      drivePos: [0, 0.5, 0],
+      gestureStateText: "HAND GESTURE DRIVE READY",
+
+      // ── Resolved Theme ──────────────────────────────────────────────────
       resolvedTheme: "dark",
 
       // ── Actions ────────────────────────────────────────────────────────
 
+      toggleDriveMode: () => set((state) => ({ isDriveMode: !state.isDriveMode })),
+      setDriveMode: (val) => set({ isDriveMode: val }),
+      setDriveState: (updates) => set((state) => ({ ...updates })),
+
       setJourneyStatus: (status) => set({ journeyStatus: status }),
+
 
       setActiveJourney: (journey) =>
         set((state) => ({
