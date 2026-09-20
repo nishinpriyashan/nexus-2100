@@ -12,11 +12,10 @@ import LiveIndicator from "../../components/tracking/LiveIndicator";
 import JourneyProgress from "../../components/tracking/JourneyProgress";
 
 export default function Tracking() {
-  const { passport, activeJourney, routeType } = useJourneyStore();
+  const { passport, activeJourney, routeType, cameraMode, setCameraMode } = useJourneyStore();
   const navigate = useNavigate();
 
   const [progress, setProgress] = useState(0.05);
-  const [cameraMode, setCameraMode] = useState("falcon");
   const [cameraRotation, setCameraRotation] = useState({ yaw: 0, pitch: 0 });
   const [cameraZoom, setCameraZoom] = useState(1.0);
 

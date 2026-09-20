@@ -1,31 +1,30 @@
 @import "tailwindcss";
 
 /* =============================================================================
-   NEXUS 2100 — Design System
-   Dark mode is the cinematic default. Light mode is clean aerospace.
+   NEXUS 2100 — Minimalist Design System (Dark & Light Modes)
    ============================================================================= */
 
 /* --- Dark Mode (default) Color Tokens --- */
 @theme {
-  /* Backgrounds */
-  --color-background: #030711;
-  --color-surface: #07111F;
-  --color-surface-elevated: #091827;
-  --color-surface-glass: rgba(7, 17, 31, 0.7);
+  /* Minimal Dark Palette */
+  --color-background: #090a0f;
+  --color-surface: #12141c;
+  --color-surface-elevated: #1a1d27;
+  --color-surface-glass: rgba(18, 20, 28, 0.75);
 
-  /* Brand */
-  --color-primary-cyan: #39E7FF;
-  --color-ai-violet: #8B5CFF;
-  --color-success: #42FFB4;
-  --color-warning: #FFB84D;
+  /* Brand Accents — Refined & Minimal */
+  --color-primary-cyan: #38bdf8;
+  --color-ai-violet: #a855f7;
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
 
-  /* Text */
-  --color-primary-text: #F4FAFF;
-  --color-secondary-text: #8CA5BA;
+  /* Typography */
+  --color-primary-text: #f8fafc;
+  --color-secondary-text: #94a3b8;
 
-  /* Borders */
-  --color-border: #0F2035;
-  --color-border-subtle: rgba(57, 231, 255, 0.12);
+  /* Borders & Dividers */
+  --color-border: #232738;
+  --color-border-subtle: rgba(255, 255, 255, 0.08);
 
   /* Fonts */
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
@@ -56,156 +55,115 @@
   }
 
   /* Custom scrollbar */
-  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: var(--color-background); }
-  ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 9999px; }
   ::-webkit-scrollbar-thumb:hover { background: var(--color-primary-cyan); }
 
-  /* Focus indicators — WCAG compliant */
+  /* Focus indicators — Minimal & Accessible */
   :focus-visible {
     outline: 2px solid var(--color-primary-cyan);
-    outline-offset: 3px;
-    border-radius: 4px;
+    outline-offset: 2px;
+    border-radius: 6px;
   }
 
-  /* Remove focus ring when using mouse */
   :focus:not(:focus-visible) {
     outline: none;
   }
 }
 
 /* =============================================================================
-   LIGHT MODE — Professional aerospace laboratory aesthetic
+   LIGHT MODE — Minimalist Clean Slate Aesthetic
    ============================================================================= */
 [data-theme="light"] {
-  --color-background: #F0F4FA;
-  --color-surface: #FFFFFF;
-  --color-surface-elevated: #E8EEF8;
-  --color-surface-glass: rgba(255, 255, 255, 0.75);
-  --color-primary-cyan: #0099CC;
-  --color-ai-violet: #7C3AED;
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #f1f5f9;
+  --color-surface-glass: rgba(255, 255, 255, 0.85);
+
+  --color-primary-cyan: #0284c7;
+  --color-ai-violet: #7e22ce;
   --color-success: #059669;
-  --color-warning: #D97706;
-  --color-primary-text: #0F1F35;
-  --color-secondary-text: #4A6380;
-  --color-border: #CBD8E8;
-  --color-border-subtle: rgba(0, 153, 204, 0.2);
+  --color-warning: #d97706;
+
+  --color-primary-text: #0f172a;
+  --color-secondary-text: #475569;
+
+  --color-border: #e2e8f0;
+  --color-border-subtle: rgba(15, 23, 42, 0.08);
 }
 
 [data-theme="light"] html,
 [data-theme="light"] body,
 :root[data-theme="light"] {
-  background-color: #F0F4FA;
-  color: #0F1F35;
+  background-color: #f8fafc;
+  color: #0f172a;
 }
 
-/* Tailwind utility overrides for light mode via data-theme */
-[data-theme="light"] .bg-background { background-color: #F0F4FA !important; }
-[data-theme="light"] .bg-surface { background-color: #FFFFFF !important; }
-[data-theme="light"] .text-primary-text { color: #0F1F35 !important; }
-[data-theme="light"] .text-secondary-text { color: #4A6380 !important; }
-[data-theme="light"] .text-primary-cyan { color: #0099CC !important; }
-[data-theme="light"] .text-ai-violet { color: #7C3AED !important; }
+/* Tailwind utility overrides for light mode */
+[data-theme="light"] .bg-background { background-color: #f8fafc !important; }
+[data-theme="light"] .bg-surface { background-color: #ffffff !important; }
+[data-theme="light"] .bg-surface-elevated { background-color: #f1f5f9 !important; }
+[data-theme="light"] .text-primary-text { color: #0f172a !important; }
+[data-theme="light"] .text-secondary-text { color: #475569 !important; }
+[data-theme="light"] .text-primary-cyan { color: #0284c7 !important; }
+[data-theme="light"] .text-ai-violet { color: #7e22ce !important; }
 [data-theme="light"] .text-success { color: #059669 !important; }
-[data-theme="light"] .border-surface { border-color: #CBD8E8 !important; }
-[data-theme="light"] .bg-background\/40 { background-color: rgba(240, 244, 250, 0.8) !important; }
-[data-theme="light"] .bg-background\/50 { background-color: rgba(240, 244, 250, 0.85) !important; }
+[data-theme="light"] .border-surface { border-color: #e2e8f0 !important; }
+[data-theme="light"] .border-border { border-color: #e2e8f0 !important; }
+[data-theme="light"] .bg-background\/40 { background-color: rgba(248, 250, 252, 0.8) !important; }
+[data-theme="light"] .bg-background\/50 { background-color: rgba(248, 250, 252, 0.85) !important; }
+[data-theme="light"] .bg-background\/60 { background-color: rgba(248, 250, 252, 0.88) !important; }
+[data-theme="light"] .bg-background\/80 { background-color: rgba(248, 250, 252, 0.92) !important; }
 [data-theme="light"] .bg-surface\/20 { background-color: rgba(255, 255, 255, 0.6) !important; }
 [data-theme="light"] .bg-surface\/30 { background-color: rgba(255, 255, 255, 0.7) !important; }
 [data-theme="light"] .bg-surface\/40 { background-color: rgba(255, 255, 255, 0.8) !important; }
-[data-theme="light"] .bg-surface\/90 { background-color: rgba(255, 255, 255, 0.95) !important; }
-[data-theme="light"] .border-surface\/50 { border-color: rgba(203, 216, 232, 0.6) !important; }
-[data-theme="light"] .border-surface\/80 { border-color: rgba(203, 216, 232, 0.8) !important; }
-[data-theme="light"] .bg-primary-cyan\/10 { background-color: rgba(0, 153, 204, 0.1) !important; }
-[data-theme="light"] .border-primary-cyan\/20 { border-color: rgba(0, 153, 204, 0.25) !important; }
-[data-theme="light"] .border-primary-cyan\/30 { border-color: rgba(0, 153, 204, 0.35) !important; }
-[data-theme="light"] .border-primary-cyan\/50 { border-color: rgba(0, 153, 204, 0.5) !important; }
-[data-theme="light"] .bg-ai-violet\/10 { background-color: rgba(124, 58, 237, 0.1) !important; }
-[data-theme="light"] .border-ai-violet\/20 { border-color: rgba(124, 58, 237, 0.25) !important; }
-[data-theme="light"] .text-primary-cyan\/60 { color: rgba(0, 153, 204, 0.6) !important; }
-[data-theme="light"] .text-primary-cyan\/40 { color: rgba(0, 153, 204, 0.4) !important; }
+[data-theme="light"] .bg-surface\/80 { background-color: rgba(255, 255, 255, 0.9) !important; }
+[data-theme="light"] .bg-surface\/90 { background-color: rgba(255, 255, 255, 0.96) !important; }
+[data-theme="light"] .border-surface\/50 { border-color: rgba(226, 232, 240, 0.8) !important; }
+[data-theme="light"] .border-surface\/80 { border-color: rgba(226, 232, 240, 0.9) !important; }
+[data-theme="light"] .bg-primary-cyan\/10 { background-color: rgba(2, 132, 199, 0.08) !important; }
+[data-theme="light"] .border-primary-cyan\/20 { border-color: rgba(2, 132, 199, 0.2) !important; }
+[data-theme="light"] .border-primary-cyan\/30 { border-color: rgba(2, 132, 199, 0.3) !important; }
+[data-theme="light"] .border-primary-cyan\/40 { border-color: rgba(2, 132, 199, 0.4) !important; }
+[data-theme="light"] .border-primary-cyan\/50 { border-color: rgba(2, 132, 199, 0.5) !important; }
+[data-theme="light"] .bg-ai-violet\/10 { background-color: rgba(126, 34, 206, 0.08) !important; }
+[data-theme="light"] .border-ai-violet\/20 { border-color: rgba(126, 34, 206, 0.2) !important; }
+[data-theme="light"] .text-primary-cyan\/60 { color: rgba(2, 132, 199, 0.7) !important; }
+[data-theme="light"] .text-primary-cyan\/40 { color: rgba(2, 132, 199, 0.5) !important; }
 [data-theme="light"] .backdrop-blur-md { backdrop-filter: blur(12px); }
-[data-theme="light"] .bg-background\/80 { background-color: rgba(240, 244, 250, 0.9) !important; }
 
-/* =============================================================================
-   VISUAL ASSISTANCE MODE
-   Larger text, thicker borders, higher contrast, bigger touch targets
-   ============================================================================= */
-.nexus-visual-assistance {
-  font-size: 18px !important;
-  line-height: 1.6 !important;
+/* Minimalist Glass Card Treatment */
+.glass-card-dark {
+  background: rgba(18, 20, 28, 0.82) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+  color: #f8fafc !important;
 }
 
-.nexus-visual-assistance button,
-.nexus-visual-assistance a,
-.nexus-visual-assistance [role="button"] {
-  min-height: 48px !important;
-  min-width: 48px !important;
-  font-size: 1rem !important;
+[data-theme="light"] .glass-card-dark {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(15, 23, 42, 0.1) !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06) !important;
+  color: #0f172a !important;
 }
 
-.nexus-visual-assistance input {
-  font-size: 1rem !important;
-  min-height: 48px !important;
-}
-
-.nexus-visual-assistance .border-surface {
-  border-width: 2px !important;
-}
-
-/* =============================================================================
-   REDUCED MOTION
-   Respect OS preference AND in-app toggle.
-   ============================================================================= */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-
-/* Applied when user toggles reduced motion in the app */
-.nexus-reduced-motion *,
-.nexus-reduced-motion *::before,
-.nexus-reduced-motion *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-}
-
-/* Keep essential transitions readable but instant */
-.nexus-reduced-motion .motion-safe\:animate-spin { animation: none !important; }
-.nexus-reduced-motion .animate-pulse { animation: none !important; opacity: 0.8 !important; }
-
-/* =============================================================================
-   NEXUS DESIGN UTILITIES
-   ============================================================================= */
-
-/* Glass panel — the primary surface treatment */
 .nexus-glass {
-  background: rgba(7, 17, 31, 0.6);
+  background: rgba(18, 20, 28, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(57, 231, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 1rem;
 }
 
 [data-theme="light"] .nexus-glass {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: rgba(0, 153, 204, 0.15);
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-}
-
-/* Glow accent for primary-cyan elements */
-.nexus-glow-cyan {
-  box-shadow: 0 0 20px rgba(57, 231, 255, 0.2), 0 0 40px rgba(57, 231, 255, 0.05);
-}
-
-/* Glow accent for AI violet elements */
-.nexus-glow-violet {
-  box-shadow: 0 0 20px rgba(139, 92, 255, 0.2), 0 0 40px rgba(139, 92, 255, 0.05);
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(15, 23, 42, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 /* Status indicator pulse */
@@ -214,45 +172,20 @@
 }
 
 @keyframes nexus-pulse-cyan {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(57, 231, 255, 0.4); }
-  50% { box-shadow: 0 0 0 6px rgba(57, 231, 255, 0); }
-}
-
-/* Route scan animation used by AI */
-@keyframes nexus-scan {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(200%); }
-}
-
-.nexus-scan-line {
-  animation: nexus-scan 2s ease-in-out infinite;
+  0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(56, 189, 248, 0); }
 }
 
 /* Typography helpers */
 .nexus-label {
   font-size: 0.625rem;
   font-weight: 700;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
 .nexus-display {
   font-family: var(--font-display);
   font-weight: 700;
-}
-
-/* Futuristic 2100 Frosted Dark Glass Mood Card */
-.glass-card-dark {
-  background: rgba(3, 7, 18, 0.82) !important;
-  backdrop-filter: blur(24px) !important;
-  -webkit-backdrop-filter: blur(24px) !important;
-  border: 1px solid rgba(57, 231, 255, 0.35) !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.85), 0 0 25px rgba(57, 231, 255, 0.15) !important;
-  color: #F4FAFF !important;
-}
-
-.glass-card-dark:hover {
-  border-color: rgba(57, 231, 255, 0.65) !important;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 35px rgba(57, 231, 255, 0.25) !important;
 }
 

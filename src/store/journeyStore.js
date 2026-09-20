@@ -24,12 +24,15 @@ export const useJourneyStore = create(
         },
       },
 
-      // ── Drive Mode state ───────────────────────────────────────────────
+      // ── Drive & Tracking View state ────────────────────────────────────
       isDriveMode: false,
       driveSpeed: 0,
       steeringAngle: 0,
       drivePos: [0, 0.5, 0],
       gestureStateText: "HAND GESTURE DRIVE READY",
+      cameraMode: "falcon",      // falcon | reality
+      showGpsMap: false,
+      isHudVisible: false,
 
       // ── Resolved Theme ──────────────────────────────────────────────────
       resolvedTheme: "dark",
@@ -39,6 +42,9 @@ export const useJourneyStore = create(
       toggleDriveMode: () => set((state) => ({ isDriveMode: !state.isDriveMode })),
       setDriveMode: (val) => set({ isDriveMode: val }),
       setDriveState: (updates) => set((state) => ({ ...updates })),
+      setCameraMode: (mode) => set({ cameraMode: mode }),
+      setShowGpsMap: (val) => set((state) => ({ showGpsMap: typeof val === "boolean" ? val : !state.showGpsMap })),
+      setIsHudVisible: (val) => set((state) => ({ isHudVisible: typeof val === "boolean" ? val : !state.isHudVisible })),
 
       setJourneyStatus: (status) => set({ journeyStatus: status }),
 
